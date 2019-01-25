@@ -1,0 +1,12 @@
+name: Nick
+version: 1.0
+author: Streafe
+main: me.Streafe.Nick.Nick
+description: Nick Plugin by Streafe v 1.0
+
+commands:
+  nick:
+    usage: /nick
+    description: change your name
+    aliases: [name]
+    default: false

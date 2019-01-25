@@ -1,0 +1,8 @@
+mysql:
+  database: "nickplugin"
+  password: ""
+  username: "root"
+  host: "localhost"
+server:
+  header: ""
+  footer: ""
