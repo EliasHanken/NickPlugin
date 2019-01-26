@@ -7,8 +7,13 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
@@ -56,6 +61,41 @@ public class Util {
         }
 
         System.out.println("updated nicks");
+    }
+
+    public static ItemStack createItem(Material material, String displayName, String itemLore, Enchantment enchantment, int enchantLvl){
+        ItemStack item = new ItemStack(material);
+
+        ItemMeta meta = item.getItemMeta();
+        meta.addEnchant(enchantment,enchantLvl, true);
+        meta.getItemFlags().add(ItemFlag.HIDE_ATTRIBUTES);
+
+        List<String> lore = new ArrayList<String>();
+        lore.add("");
+        lore.add(ChatColor.translateAlternateColorCodes('&', itemLore));
+        meta.setLore(lore);
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',displayName));
+
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
+    public static ItemStack createItem(Material material, String displayName, String itemLore){
+        ItemStack item = new ItemStack(material);
+
+        ItemMeta meta = item.getItemMeta();
+        meta.getItemFlags().add(ItemFlag.HIDE_ATTRIBUTES);
+
+        List<String> lore = new ArrayList<String>();
+        lore.add("");
+        lore.add(ChatColor.translateAlternateColorCodes('&', itemLore));
+        meta.setLore(lore);
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&',displayName));
+
+        item.setItemMeta(meta);
+
+        return item;
     }
 
 

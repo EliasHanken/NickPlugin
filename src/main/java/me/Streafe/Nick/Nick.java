@@ -1,8 +1,10 @@
 package me.Streafe.Nick;
 
 import me.Streafe.Nick.commands.NickCommand;
+import me.Streafe.Nick.commands.ParticleCommand;
 import me.Streafe.Nick.database_connection.SQL;
 import me.Streafe.Nick.listener_package.ChatControl;
+import me.Streafe.Nick.listener_package.ChestInteract;
 import me.Streafe.Nick.listener_package.ScoreBoardUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -55,11 +57,14 @@ public class Nick extends JavaPlugin implements Listener {
 
     public void registerCommands(){
         getCommand("nick").setExecutor(new NickCommand());
+        getCommand("particles").setExecutor(new ParticleCommand());
     }
 
     public void registerListeners(){
         Bukkit.getPluginManager().registerEvents(this,this);
         Bukkit.getPluginManager().registerEvents(new ChatControl(), this);
+        Bukkit.getPluginManager().registerEvents(new ChestInteract(), this);
+        Bukkit.getPluginManager().registerEvents(new Particle(), this);
     }
 
     @EventHandler

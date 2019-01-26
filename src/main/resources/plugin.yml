@@ -5,8 +5,10 @@ main: me.Streafe.Nick.Nick
 description: Nick Plugin by Streafe v 1.0
 
 commands:
+  particles:
+    usage: /<command>
+    description: particles command
   nick:
-    usage: /nick
+    usage: /<command>
     description: change your name
-    aliases: [name]
     default: false
