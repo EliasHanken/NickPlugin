@@ -5,6 +5,7 @@ import me.Streafe.Nick.database_connection.SQL;
 import me.Streafe.Nick.listener_package.ChatControl;
 import me.Streafe.Nick.listener_package.ScoreBoardUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -12,6 +13,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import java.io.File;
 import java.io.IOException;
@@ -77,6 +80,10 @@ public class Nick extends JavaPlugin implements Listener {
             playerData.set("player.nick", "");
         }
 
+        if(playerData.get("player.rankPrefix") == null){
+            playerData.set("player.rankPrefix", "");
+        }
+
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
@@ -108,9 +115,28 @@ public class Nick extends JavaPlugin implements Listener {
         FileConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
 
 
-        if(playerData.get("player.nick") != null){
-            playerData.set("player.nick", nick);
+
+        playerData.set("player.nick", nick);
+
+
+        try {
+            playerData.save(playerFile);
+        } catch (IOException e1) {
+            Bukkit.getServer().getLogger().severe("Could not save " + p.getName() + "'s data file!");
+            e1.printStackTrace();
         }
+
+    }
+
+    public void setRankPrefix(Player p, String prefix){
+
+        File playerFile = getPlayerFile(p.getName());
+        FileConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
+
+
+
+        playerData.set("player.rankPrefix", prefix);
+
 
         try {
             playerData.save(playerFile);
@@ -135,10 +161,37 @@ public class Nick extends JavaPlugin implements Listener {
 
         return null;
     }
+    public String getPrefix(Player p) {
+        try{
+            File playerFile = getPlayerFile(p.getName());
+            FileConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
+            String prefix;
+            prefix = playerData.get("player.rankPrefix").toString();
+            return prefix;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
         ScoreBoardUtil.setHeaderandFooter(e.getPlayer());
+
+        Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
+
+
+            for(Player players : Bukkit.getOnlinePlayers()){
+                Team t = board.registerNewTeam(players.getName());
+                t.addPlayer(players);
+                t.setPrefix(ChatColor.translateAlternateColorCodes('&',getPrefix(players)));
+                players.setScoreboard(board);
+            }
+
+
     }
+
+
 }

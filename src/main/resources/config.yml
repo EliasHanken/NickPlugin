@@ -6,3 +6,4 @@ mysql:
 server:
   header: ""
   footer: ""
+version: "1.0"
